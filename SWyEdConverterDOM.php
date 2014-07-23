@@ -98,8 +98,8 @@ class SWyEdConverterDOM
 				
 			$newNode = array(
 			'id'         => $node['id'],
-			'label'      => $node['label'],
-			'constraint' => $node['constraint'],
+			'label'      => (isset($node['label']) ? $node['label'] : ''),
+			'constraint' => (isset($node['constraint']) ? $node['constraint'] : ''),
 			'metadata'   => array(
 			'background-color' => $node['background-color'],
 			'color'            => $node['color']
