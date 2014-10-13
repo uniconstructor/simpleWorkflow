@@ -1070,4 +1070,59 @@ class SWActiveRecordBehavior extends CBehavior
 			$this->_delayedEvent[] = array('name' => 'onFinalStatus', 'objEvent' => $event);
 		}
 	}
+	
+	/**
+	 * Named scope: find records with specified status
+	 * @see http://www.yiiframework.com/doc/guide/1.1/en/database.ar#named-scopes
+	 * 
+	 * This method uses table alias from $this->owner to prevent column name conflicts
+	 * You can safely use this scope to create "with" condition in relation query
+	 * Empty value or null in $status means no error: in this case internal record criteria
+	 * will simply remain untouched. Use "withoutStatus()" method to find all records without any status
+	 * 
+	 * Examples:
+	 * // draft posts ONLY:
+	 * $model->withStatus('swPost/draft')->findAll();
+	 * // all draft OR published posts: 
+	 * $model->withStatus(array('swPost/draft', 'swPost/published'))->findAll();
+	 * // all posts with any status EXCEPT draft:
+	 * $model->withStatus('swPost/draft', 'AND NOT')->findAll();
+	 * 
+	 * @param string|array $status - full status name (including workflow ID: 'swPost/draft') 
+	 *                               or array of status names
+	 * @param string $operation    - how to combine this scope with others ('AND'/'OR'/'AND NOT'/'OR NOT')
+	 *                               defaults to 'AND'
+	 * @return SWActiveRecord
+	 */
+	public function withStatus($status, $operation='AND')
+	{
+	    if ( ! $status )
+	    {// scope not used - return owner model to continue method chain without exception
+	        return $this->owner;
+	    }
+	    $criteria = new CDbCriteria();
+	    $criteria->compare($this->owner->getTableAlias(true).'.`'.$this->statusAttribute.'`', $status);
+	
+	    $this->owner->getDbCriteria()->mergeWith($criteria, $operation);
+	
+	    return $this->owner;
+	}
+	
+	/**
+	 * Named scope: find records without any status
+	 * @see http://www.yiiframework.com/doc/guide/1.1/en/database.ar#named-scopes
+	 * 
+	 * @param string $operation - how to combine this scope with others ('AND'/'OR'/'AND NOT'/'OR NOT')
+	 *                               defaults to 'AND'
+	 * @return SWActiveRecord
+	 */
+	public function withoutStatus($operation='AND')
+	{
+	    $criteria = new CDbCriteria();
+	    $criteria->addCondition($this->owner->getTableAlias(true).'.`'.$this->statusAttribute.'` IS NULL');
+	    
+	    $this->owner->getDbCriteria()->mergeWith($criteria, $operation);
+	    
+	    return $this->owner;
+	}
 }
