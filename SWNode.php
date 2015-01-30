@@ -2,6 +2,10 @@
 
 /**
  * This class implements a graph node for the simpleWorkflow extension.
+ * 
+ * @property int    $id
+ * @property string $label
+ * @property SWNode $next
  */
 class SWNode extends CComponent
 {
