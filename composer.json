@@ -1,16 +1,15 @@
 {
     "name": "uniconstructor/simpleWorkflow",
     "homepage": "http://s172418307.onlinehome.fr/project/sandbox/www/index.php?r=simpleWorkflow/page&view=home",
-    "license": "BSDv3",
+    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "raoul2000",
-            "homepage": "https://github.com/raoul2000",
+            "homepage": "https://github.com/raoul2000"
         },
         {
             "name": "uniconstructor",
-            "email": "php1602agregator@gmail.com",
-            "homepage": "https://github.com/uniconstructor",
+            "homepage": "https://github.com/uniconstructor"
         }
     ],
     "require": {
